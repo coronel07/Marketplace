@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Mis Pedidos - Nuvus Store{% endblock %}
+
+{% block content %}
+<div class="nvs-pedidos-container">
+    
+    <a href="{{ url_for('index') }}" class="nvs-retorno-link">⬅ Volver a la tienda</a>
+
+    <div class="nvs-header-seccion">
+        <h2>Mis Pedidos</h2>
+        <p>Realiza el seguimiento de tus compras y revisa los códigos de envío en tiempo real.</p>
+    </div>
+
+    <div class="nvs-tabla-scroll">
+        <table class="nvs-tabla">
+            <thead>
+                <tr>
+                    <th>Pedido</th>
+                    <th>Artículos</th>
+                    <th>Destino de Entrega</th>
+                    <th>Total</th>
+                    <th>Estado Logístico</th>
+                    <th style="text-align: right;">Código de Seguimiento</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for p in pedidos %}
+                <tr>
+                    <!-- ID & Fecha -->
+                    <td>
+                        <div style="font-weight: bold; color: #ffffff;">#NVS-{{ p.id }}</div>
+                        <div style="font-size: 11px; color: #aaa; margin-top: 4px;">
+                            {{ p.fecha.strftime('%d/%m/%Y') if p.fecha else 'S/D' }}
+                        </div>
+                    </td>
+
+                    <!-- Detalle de Productos -->
+                    <td style="line-height: 1.4; color: #e6e6e6; font-weight: 500;">
+                        {% for item in p.items %}
+                        <div style="margin-bottom: 2px;">
+                            • {{ item.producto.nombre }} <strong style="color: #0077ff;">(x{{ item.cantidad }})</strong>
+                        </div>
+                        {% endfor %}
+                    </td>
+
+                    <!-- Domicilio Guardado -->
+                    <td style="max-width: 220px; line-height: 1.4; color: #e6e6e6; font-size: 12px;">
+                        {% if p.direccion %}
+                            <div><strong>{{ p.destinatario }}</strong></div>
+                            <div style="color: #aaa; margin-top: 2px;">{{ p.direccion }}</div>
+                            <div style="color: #888; font-size: 11px;">{{ p.ciudad }}, {{ p.provincia }} (CP {{ p.codigo_postal }})</div>
+                        {% else %}
+                            <span style="color: #666; font-style: italic;">Retiro en sucursal</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Monto Neto -->
+                    <td style="font-weight: bold; color: #ffffff; font-size: 14px; white-space: nowrap;">
+                        ${{ "{:,.0f}".format(p.total) }}
+                    </td>
+
+                    <!-- Badge de Estado Estilizado -->
+                    <td>
+                        <span class="nvs-badge {% if p.estado|lower == 'pendiente' %}nvs-badge-pendiente{% elif p.estado|lower == 'pagado' %}nvs-badge-pagado{% elif p.estado|lower == 'enviado' %}nvs-badge-enviado{% else %}nvs-badge-error{% endif %}">
+                            {{ p.estado|upper }}
+                        </span>
+                    </td>
+
+                    <!-- Código de Tracking Interactuable -->
+                    <td style="text-align: right; white-space: nowrap;">
+                        {% if p.codigo_seguimiento %}
+                            <div class="nvs-tracking-box">
+                                <span class="nvs-tracking-code">{{ p.codigo_seguimiento }}</span>
+                                <button onclick="copiarTracking('{{ p.codigo_seguimiento }}', this)" class="nvs-tracking-btn" title="Copiar código al portapapeles">
+                                    📋
+                                </button>
+                            </div>
+                        {% else %}
+                            <span style="color: #666; font-style: italic; font-size: 12px;">Preparando empaque...</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" style="padding: 50px; text-align: center; color: #666; font-weight: bold; font-style: italic;">
+                        Aún no has realizado ninguna compra en nuestra tienda.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function copiarTracking(codigo, boton) {
+    navigator.clipboard.writeText(codigo).then(() => {
+        const iconoOriginal = boton.innerHTML;
+        boton.innerHTML = "✅";
+        boton.style.color = "#2ecc71";
+        boton.style.transform = "scale(1.1)";
+        setTimeout(() => {
+            boton.innerHTML = iconoOriginal;
+            boton.style.color = "#aaa";
+            boton.style.transform = "scale(1)";
+        }, 2000);
+    }).catch(err => { console.error('Error al ejecutar portapapeles: ', err); });
+}
+</script>
+{% endblock %}

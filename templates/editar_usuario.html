@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Editar Usuario - Nuvus Store{% endblock %}
+
+{% block content %}
+<div class="form-card">
+
+    <h2 class="titulo-admin">
+        Editar Usuario
+    </h2>
+
+    <form action="{{ url_for('admin_editar_usuario', id=usuario.id) }}" method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <div class="form-grupo">
+            <label>Nombre de usuario</label>
+            <input type="text" name="nombre" value="{{ usuario.nombre }}" required autocomplete="off">
+        </div>
+
+        <div class="form-grupo">
+            <label>Correo electrónico</label>
+            <input type="email" name="email" value="{{ usuario.email }}" required autocomplete="off">
+        </div>
+
+        <div class="form-grupo">
+            <label>Rol</label>
+            <select name="rol" required>
+                <option value="cliente" {% if usuario.rol == 'cliente' %}selected{% endif %}>Cliente</option>
+                <option value="admin" {% if usuario.rol == 'admin' %}selected{% endif %}>Administrador</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn-guardar" style="margin-top: 10px;">
+            Guardar cambios
+        </button>
+    </form>
+</div>
+{% endblock %}

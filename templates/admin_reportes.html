@@ -1,0 +1,36 @@
+{% extends "admin_base.html" %}
+{% set section = "reportes" %}
+
+{% block contenido %}
+
+<h2 class="titulo-admin">Reporte de ventas</h2>
+
+<div style="width: 600px; margin: 0 auto;">
+    <canvas id="graficoVentas"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('graficoVentas');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+        datasets: [{
+            label: 'Ventas $',
+            data: [25000, 32000, 29000, 41000, 38000],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: false }
+        }
+    }
+});
+</script>
+
+{% endblock %}

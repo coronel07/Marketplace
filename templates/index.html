@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Nuvus Store{% endblock %}
+
+{% block content %}
+
+
+
+<!-- Filtros a la izquierda 
+<aside class="sidebar">
+
+    <h3>Productos</h3>
+
+    <form method="get" action="{{ url_for('index') }}" id="filtrosForm">
+
+        <label>Buscar</label>
+        <input type="text" name="q" value="{{ busqueda }}" onchange="this.form.submit()">
+
+        <br><br>
+
+        <label>Precio máximo</label>
+        <span>0</span>
+
+        <input type="range" name="precio" min="0" max="2000000" value="{{ precio_max }}"
+            oninput="this.nextElementSibling.innerText = this.value" onchange="this.form.submit()">
+
+        <span>{{ precio_max }}</span>
+
+        <br><br>
+
+        <label>Categorías</label>
+        <div class="checkboxes">
+            {% for c in categorias %}
+            <label>
+                <input type="checkbox" name="categoria" value="{{ c.id }}" {% if c.id|string in
+                    request.args.getlist('categoria') %}checked{% endif %} onchange="this.form.submit()">
+                {{ c.nombre }}
+            </label>
+            {% endfor %}
+        </div>
+
+    </form>
+
+</aside>-->
+
+<!-- Sección principal de productos -->
+<section class="productos">
+
+    <div class="busqueda-filtros">
+
+        <div class="buscador">
+            <form action="{{ url_for('index') }}" method="get">
+                <input type="text" name="q" placeholder="Buscar">   
+                <button type="submit">🔍</button>
+            </form>
+        </div>
+
+        <div class="orden">
+            <a href="/?orden=mayor"><button type="button">Mayor precio</button></a>
+            <a href="/?orden=menor"><button type="button">Menor precio</button></a>
+            <a href="/?orden=antiguo"><button type="button">Más antiguo</button></a>
+        </div>
+
+    </div>
+
+    <div class="grilla">
+        {% for p in productos %}
+        <a href="{{ url_for('producto', id=p.id) }}" class="card-link">
+            <div class="card">
+                <img src="{{ url_for('static', filename='img/' + p.imagen) }}" alt="{{ p.nombre }}">
+
+                <p class="nombre">{{ p.nombre }}</p>
+
+                <p class="precio">
+                    ${{ "{:,.0f}".format(p.precio) }}
+                </p>
+            </div>  
+        </a>
+        {% endfor %}
+    </div>
+
+
+</section>
+
+
+
+{% endblock %}

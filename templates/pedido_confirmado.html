@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Pedido Registrado #{{ pedido.id }} - Nuvus Store{% endblock %}
+
+{% block content %}
+<div class="carrito-container" style="max-width: 650px; text-align: center; padding: 40px 30px; margin: 40px auto;">
+
+    <!-- Ícono animado de éxito premium -->
+    <div style="margin-bottom: 20px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" style="margin: 0 auto;">
+            <circle cx="48" cy="48" r="44" fill="rgba(46, 204, 113, 0.12)" />
+            <circle cx="48" cy="48" r="44" fill="none" stroke="#2ecc71" stroke-width="4" />
+            <path d="M30 48 L42 60 L66 36" fill="none" stroke="#2ecc71" stroke-width="6" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+    </div>
+
+    <!-- Ajustado: Mensaje alineado al acuerdo de contacto -->
+    <h1 style="color: #2ecc71; border-bottom: none; margin-bottom: 8px; font-size: 30px; font-weight: 800;">¡Orden Registrada!</h1>
+    <p style="color: #a1a1a6; font-size: 16px; margin-bottom: 30px; line-height: 1.5;">
+        Tu solicitud ha sido procesada correctamente. Un asesor comercial se pondrá en contacto con vos en breve a los canales provistos para coordinar el pago y el envío de tu paquete.
+    </p>
+
+    <!-- Caja de detalles del recibo físico -->
+    <div class="caracteristicas"
+        style="text-align: left; margin-bottom: 30px; background: #ffffff; padding: 30px; border-radius: 20px; border: 1px solid #eae5da; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); color: #0c0c0e !important;">
+        <h4
+            style="border-bottom: 1px solid #eae5da; padding-bottom: 12px; margin-bottom: 18px; color: #0c0c0e !important; font-size: 17px; font-weight: 700;">
+            Resumen de la Orden #{{ pedido.id }}
+        </h4>
+
+        <p
+            style="margin-bottom: 10px; font-size: 14px; color: #0c0c0e !important; display: flex; justify-content: space-between;">
+            <span style="color: #29292b;">Fecha de solicitud:</span>
+            <strong style="color: #0c0c0e !important;">{{ pedido.fecha.strftime('%d/%m/%Y %H:%M') }}</strong>
+        </p>
+        <p
+            style="margin-bottom: 10px; font-size: 14px; color: #0c0c0e !important; display: flex; justify-content: space-between;">
+            <span style="color: #29292b;">Cliente:</span>
+            <strong style="color: #0c0c0e !important;">{{ pedido.usuario.nombre }} ({{ pedido.usuario.email }})</strong>
+        </p>
+        
+        <!-- Agregado: Recordatorio visual del canal donde lo van a llamar -->
+        <p style="margin-bottom: 10px; font-size: 14px; color: #0c0c0e !important; display: flex; justify-content: space-between;">
+            <span style="color: #29292b;">Teléfono de contacto:</span>
+            <strong style="color: #0c0c0e !important;">{{ pedido.telefono or 'No especificado' }}</strong>
+        </p>
+
+        <p
+            style="margin-bottom: 18px; font-size: 14px; color: #0c0c0e !important; display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #29292b;">Estado de Gestión:</span>
+            <!-- Ajustado: Cambiamos el texto del badge a pendiente de validación o el estado nativo -->
+            <span class="badge-stock"
+                style="background: rgba(0, 119, 255, 0.12); color: #0077ff !important; margin-bottom: 0; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">
+                PENDIENTE DE CONTACTO
+            </span>
+        </p>
+
+        <!-- Desglose de productos comprados en este pedido específico -->
+        <div style="margin-top: 20px; border-top: 1px solid #eae5da; padding-top: 18px;">
+            <p style="font-weight: 700; margin-bottom: 12px; font-size: 14px; color: #0c0c0e !important;">Detalle de Artículos:</p>
+
+            {% for item in pedido.items %}
+            <div
+                style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #0c0c0e !important;">
+                <span style="color: #29292b;">
+                    {{ item.producto.nombre }} <strong style="color: #0c0c0e !important; font-weight: 700;">x{{ item.cantidad }}</strong>
+                </span>
+                <span style="font-weight: 700; color: #0c0c0e !important;">
+                    ${{ "{:,.0f}".format(item.precio_unitario * item.cantidad) }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Total de la Compra -->
+        <div
+            style="display: flex; justify-content: space-between; border-top: 1px solid #eae5da; padding-top: 16px; margin-top: 16px; align-items: center;">
+            <span style="font-weight: 700; font-size: 16px; color: #0c0c0e !important;">Total a coordinar:</span>
+            <span style="font-weight: 800; font-size: 20px; color: #0c0c0e !important; letter-spacing: -0.5px;">
+                ${{ "{:,.0f}".format(pedido.total) }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Acciones directas para continuar navegando -->
+    <a href="{{ url_for('index') }}" class="btn-pago"
+        style="text-decoration: none; display: inline-block; width: auto; padding: 12px 28px; background: #0077ff; color: #ffffff; font-weight: bold; font-size: 14px; border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 119, 255, 0.15); transition: background 0.2s ease;"
+        onmouseover="this.style.background='#005cd6'" onmouseout="this.style.background='#0077ff'">
+        Volver a la tienda
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+<nav class="navbar">
+
+    <!-- Lado Izquierdo: Logotipo y Enlaces del Cliente -->
+    <div class="nav-izquierda">
+        <a href="{{ url_for('index') }}" class="logo-link">
+            <img src="{{ url_for('static', filename='img/gemini-svg.svg') }}" class="logo-navbar" alt="Nuvus Store"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+            <span class="logo-text" style="display: none;">Nuvus Store</span>
+        </a>
+
+        <div class="links-grupo">
+            {% if session.get('usuario_id') and session.get('usuario_rol') == 'admin' %}
+            <a href="{{ url_for('admin_pedidos') }}"
+                class="{% if section in ['pedidos', 'productos', 'usuarios', 'reportes'] %}activo{% endif %}"
+                style="color: #66b2ff !important;">
+                🛠️ Panel Admin
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Lado Derecho: Carrito, Bienvenida y Login/Logout -->
+    <div class="nav-derecha">
+        <a href="{{ url_for('index') }}" class="{% if not section or section == 'tienda' %}activo{% endif %}">
+            🏪 Tienda
+        </a>
+
+        {% if session.get('usuario_id') %}
+        <a href="{{ url_for('mis_pedidos') }}" class="{% if section == 'mis_pedidos' %}activo{% endif %}">
+            📦 Mis Compras
+        </a>
+        {% endif %}
+        <a href="{{ url_for('carrito') }}" class="{% if section == 'carrito' %}activo{% endif %}">
+            🛒 Carrito
+            {% if session.get('carrito') and session.get('carrito')|length > 0 %}
+            <span class="badge-carrito">
+                {{ session.get('carrito')|length }}
+            </span>
+            {% endif %}
+        </a>
+
+        <span class="nav-separador"></span>
+
+        {% if session.get('usuario_id') %}
+        <span class="bienvenida" style="color: #66b2ff; margin-right: 10px;">
+            👋 Hola, {{ session.get('usuario_nombre') }}
+        </span>
+        <a href="{{ url_for('logout') }}" class="btn-cerrar">
+            Cerrar sesión
+        </a>
+
+        {% else %}
+        <a href="{{ url_for('login') }}" class="btn-iniciar {% if active=='login' %}activo{% endif %}">
+            Iniciar sesión
+        </a>
+
+        <a href="{{ url_for('register') }}" class="btn-registrar {% if active=='register' %}activo{% endif %}">
+            Registrar
+        </a>
+        {% endif %}
+    </div>
+</nav>

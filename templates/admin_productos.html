@@ -1,0 +1,123 @@
+{% extends "admin_base.html" %}
+{% set section = "productos" %}
+
+{% block contenido %}
+
+<h2 class="titulo-admin">Gestión de Productos</h2>
+
+<div style="display: flex; gap: 10px; margin-bottom: 20px;">
+    <a href="{{ url_for('admin_agregar_producto') }}" class="btn-agregar" style="margin: 0;">+ Agregar producto</a>
+    
+    <!-- Botón para eliminar los seleccionados (se envía el formulario de la tabla) -->
+    <button type="submit" form="form-eliminar-masivo" class="btn-eliminar" style="background-color: #dc2626; color: white; padding: 10px 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="return confirmarEliminacionMasiva()">
+        🗑️ Eliminar seleccionados
+    </button>
+</div>
+
+<!-- Envolvemos la tabla en el formulario masivo -->
+<form id="form-eliminar-masivo" action="{{ url_for('admin_eliminar_productos_multiples') }}" method="POST">
+    <div class="tabla-admin">
+        <table>
+            <thead>
+                <tr>
+                    <!-- Casilla master para seleccionar todo -->
+                    <th style="width: 40px; text-align: center;">
+                        <input type="checkbox" id="seleccionar-todos" style="cursor: pointer; transform: scale(1.2);">
+                    </th>
+                    <th>ID</th>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for p in productos %}
+                <tr>
+                    <!-- Casilla individual por producto -->
+                    <td style="text-align: center;">
+                        <input type="checkbox" name="producto_ids" value="{{ p.id }}" class="checkbox-producto" style="cursor: pointer; transform: scale(1.2);">
+                    </td>
+                    
+                    <td>{{ p.id }}</td>
+
+                    <td>
+                        {% if p.imagen %}
+                            <img src="{{ p.imagen }}" width="50">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='img/no-image.png') }}" width="50">
+                        {% endif %}
+                    </td>
+
+                    <td>{{ p.nombre }}</td>
+
+                    <td>${{ "{:,.0f}".format(p.precio) }}</td>
+
+                    <td>{{ p.stock }}</td>
+
+                    <td>
+                        {% if p.categoria %}
+                            {{ p.categoria.nombre }}
+                        {% else %}
+                            Sin categoría
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a href="{{ url_for('admin_editar_producto', id=p.id) }}" class="btn-editar">Editar</a>
+
+                        <!-- El botón individual sigue funcionando de manera independiente -->
+                        <button type="button" class="btn-eliminar" onclick="eliminarIndividual('{{ p.id }}')" style="display:inline-block;">Eliminar</button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8" style="text-align: center; color: #a1a1a6; padding: 20px;">No hay productos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+
+<!-- Formulario oculto auxiliar para la eliminación individual -->
+<form id="form-eliminar-individual" method="POST" style="display: none;"></form>
+
+<script>
+    const checkboxMaster = document.getElementById('seleccionar-todos');
+    const checkboxesProductos = document.querySelectorAll('.checkbox-producto');
+
+    // 1. Lógica para marcar/desmarcar todos al presionar la casilla del encabezado
+    checkboxMaster.addEventListener('change', function() {
+        checkboxesProductos.forEach(cb => {
+            cb.checked = checkboxMaster.checked;
+        });
+    });
+
+    // 2. Validación antes de enviar el formulario masivo
+    function confirmarEliminacionMasiva() {
+        const seleccionados = document.querySelectorAll('.checkbox-producto:checked').length;
+        
+        if (seleccionados === 0) {
+            alert('Por favor, selecciona al menos un producto para eliminar.');
+            return false;
+        }
+        
+        return confirm(`¿Estás seguro de que querés eliminar los ${seleccionados} productos seleccionados? Esta acción no se puede deshacer.`);
+    }
+
+    // 3. Función para mantener la eliminación individual sin romper el formulario principal
+    function eliminarIndividual(id) {
+        if (confirm('¿Eliminar producto?')) {
+            const formIndividual = document.getElementById('form-eliminar-individual');
+            // Reconstruimos dinámicamente la URL para mantener el url_for de Flask del botón original
+            formIndividual.action = `/admin/productos/eliminar/${id}`; // Asegurate de que esta estructura coincida con tus rutas de Flask
+            formIndividual.submit();
+        }
+    }
+</script>
+
+{% endblock %}

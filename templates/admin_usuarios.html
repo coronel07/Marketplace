@@ -1,0 +1,39 @@
+{% extends "admin_base.html" %}
+{% set section = "usuarios" %}
+
+{% block contenido %}
+
+<h2 class="titulo-admin">Gestión de Usuarios</h2>
+
+<div class="tabla-admin">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Fecha de registro</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.fecha_registro }}</td>
+                <td>{{ u.rol }}</td>
+                <td>
+                    <a href="/admin/usuarios/editar/{{ u.id }}" class="btn-editar">Editar</a>
+                    <a href="/admin/usuarios/eliminar/{{ u.id }}" class="btn-eliminar">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

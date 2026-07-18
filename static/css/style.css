@@ -1,0 +1,1343 @@
+/* ==========================================================================
+   NUVUS STORE - ARCHIVO MAESTRO DE ESTILOS CENTRALIZADOS (CSS CORE)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   [01] RESET GENERAL Y VARIABLES DEL SISTEMA
+   -------------------------------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+    background-color: #0c0c0e; /* Identidad Premium Dark */
+    color: #ffffff;
+}
+
+
+/* --------------------------------------------------------------------------
+   [02] COMPONENTES GLOBALES DE LA BARRA DE NAVEGACIÓN (NAVBAR)
+   -------------------------------------------------------------------------- */
+.navbar {
+    background-color: #1c1c1c;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px;
+    border-bottom: 1px solid #0077ff;
+}
+
+.navbar .nav-izquierda {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar .nav-izquierda .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.navbar .nav-izquierda .logo-text {
+    font-weight: bold;
+    font-size: 20px;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    margin-left: 8px;
+}
+
+.navbar .nav-izquierda .links-grupo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 10px;
+}
+
+.navbar .nav-derecha {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.navbar a.activo {
+    color: #0077ff !important;
+    font-weight: bold;
+}
+
+.navbar .logo-navbar {
+    height: 32px;
+    width: auto;
+    vertical-align: middle;
+}
+
+.navbar .badge-carrito {
+    background: #0057B8;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 7px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 6px;
+    display: inline-block;
+    line-height: 1;
+}
+
+.navbar .nav-separador {
+    border-left: 1px solid #333;
+    height: 20px;
+    margin: 0 5px;
+}
+
+/* Interacciones de Botones en Navbar */
+.navbar .btn-iniciar {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 12px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: 1px solid rgba(102, 178, 255, 0.2);
+    background: rgba(102, 178, 255, 0.05);
+    transition: background 0.2s;
+}
+.navbar .btn-iniciar:hover {
+    background: rgba(102, 178, 255, 0.15);
+}
+
+.navbar .btn-registrar {
+    color: #ffffff;
+    background: #0057B8;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #0057B8;
+    transition: background 0.2s;
+}
+.navbar .btn-registrar:hover {
+    background: #004494;
+}
+
+.navbar .btn-cerrar {
+    color: #ff4d6d;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 77, 109, 0.2);
+    background: rgba(255, 77, 109, 0.05);
+    transition: background 0.2s;
+}
+.navbar .btn-cerrar:hover {
+    background: rgba(255, 77, 109, 0.15);
+}
+
+
+/* --------------------------------------------------------------------------
+   [03] VISTA PRINCIPAL DE LA TIENDA (GRILLA Y FILTROS)
+   -------------------------------------------------------------------------- */
+.contenido {
+    display: flex;
+    padding: 25px;
+    gap: 25px;
+}
+
+.sidebar {
+    background-color: #1c1c1c;
+    padding: 20px;
+    width: 260px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    height: fit-content;
+}
+
+.sidebar h3 {
+    color: #ffffff;
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #0057B8;
+    display: inline-block;
+    padding-bottom: 3px;
+}
+
+.filtro-etiqueta {
+    background-color: #0057B8;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filtro-etiqueta .x {
+    cursor: pointer;
+    color: #ff4d6a;
+    font-size: 18px;
+}
+
+.filtro-precio label,
+.filtro-color label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.filtro-precio input[type=range] {
+    width: 100%;
+    margin: 0 10px;
+    accent-color: #0077ff;
+}
+
+.checkboxes label {
+    display: block;
+    margin-bottom: 6px;
+    cursor: pointer;
+    color: #a1a1a6;
+    font-size: 14px;
+}
+
+.productos {
+    flex: 1;
+    padding: 0 10px;
+}
+
+.busqueda-filtros {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.buscador {
+    display: flex;
+    gap: 10px;
+}
+
+.buscador input {
+    padding: 10px 15px;
+    width: 250px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #242424;
+    color: white;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.buscador input:focus {
+    outline: none;
+    border-color: #0077ff;
+}
+
+.buscador button {
+    padding: 10px 16px;
+    background-color: #0077ff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    transition: background 0.2s;
+}
+
+.buscador button:hover {
+    background-color: #005cd6;
+}
+
+.orden button {
+    margin-left: 10px;
+    padding: 10px 16px;
+    background-color: #242424;
+    border: 1px solid #444;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    color: #ffffff;
+    transition: 0.2s;
+}
+
+.orden button:hover {
+    background-color: #0077ff;
+    border-color: #0077ff;
+}
+
+/* Grilla Clientes de Productos */
+.grilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 22px;
+}
+
+.card {
+    background-color: #1c1c1c;
+    border: 1px solid #333;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: contain;
+    background-color: #ffffff;
+    padding: 12px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid #333;
+}
+
+.card .nombre {
+    font-weight: 600;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #ffffff;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+}
+
+.card-footer {
+    margin-top: auto;
+}
+
+.card .precio {
+    color: #66b2ff;
+    font-weight: bold;
+    margin-top: 5px;
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.sin-resultados {
+    text-align: center;
+    color: #a1a1a6;
+    font-size: 16px;
+    margin-top: 60px;
+}
+
+
+/* --------------------------------------------------------------------------
+   [04] DETALLE INDIVIDUAL DE PRODUCTO
+   -------------------------------------------------------------------------- */
+.volver {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #00aaff; /* Color celeste viejo */
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.volver:hover {
+    text-decoration: underline;
+}
+
+.producto-img {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+.producto-img img {
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #fff;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.producto-info {
+    flex: 1;
+    color: #fff;
+}
+
+.producto-info h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.badge-stock {
+    display: inline-block;
+    background: #2ecc71;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 15px;
+}
+
+.precio {
+    font-size: 42px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.selector {
+    margin-bottom: 15px;
+}
+
+.selector label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    opacity: .8;
+}
+
+.selector select {
+    width: 160px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #2b2b2b;
+    color: #fff;
+}
+
+.btn-agregar {
+    width: 100%;
+    padding: 12px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: 0.15s;
+}
+.btn-agregar:hover {
+    background: #e0e0e0;
+}
+
+.caracteristicas {
+    border: 1px solid #444;
+    border-radius: 10px;
+    padding: 15px;
+    background: #222;
+}
+
+.caracteristicas h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.caracteristicas p {
+    margin: 0;
+    opacity: .9;
+}
+
+
+/* --------------------------------------------------------------------------
+   [05] COMPONENTES DE VISTA DE CARRITO (PROTECCIÓN DE ANCHOS)
+   -------------------------------------------------------------------------- */
+.nvs-carrito-wrapper {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 35px;
+    background: #1c1c1c;
+    border-radius: 10px;
+    border: 1px solid #333;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+}
+
+.nvs-item-carrito {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: #242424;
+    border-radius: 6px;
+    border: 1px solid #333;
+    gap: 20px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.nvs-item-visual {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nvs-item-visual img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #1c1c1c;
+    border: 1px solid #444;
+}
+
+.nvs-item-visual .nvs-no-img {
+    width: 70px;
+    height: 70px;
+    background: #1c1c1c;
+    border-radius: 6px;
+    border: 1px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 20px;
+}
+
+.nvs-item-acciones {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nvs-btn-eliminar {
+    background: rgba(255, 77, 109, 0.05);
+    border: 1px solid rgba(255, 77, 109, 0.2);
+    color: #ff4d6a;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: 0.2s;
+}
+.nvs-btn-eliminar:hover {
+    background: rgba(255, 77, 109, 0.15);
+}
+
+.nvs-pie-comprobante {
+    display: block !important;
+    border-top: 1px solid #333;
+    padding-top: 25px;
+    margin-top: 25px;
+    position: relative !important;
+    height: 60px;
+    box-sizing: border-box;
+}
+
+.nvs-pie-izq {
+    position: absolute !important;
+    left: 0 !important;
+    top: 25px !important;
+    text-align: left !important;
+}
+
+.nvs-pie-der-box {
+    position: absolute !important;
+    right: 0 !important;
+    top: 25px !important;
+    background: #0077ff !important;
+    color: #ffffff !important;
+    padding: 12px 28px !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 10px rgba(0, 119, 255, 0.2) !important;
+    transition: background 0.2s ease !important;
+    line-height: 1.4 !important;
+    white-space: nowrap !important;
+    display: inline-block !important;
+}
+.nvs-pie-der-box:hover {
+    background: #005cd6 !important;
+}
+
+.nvs-btn-explorar {
+    text-decoration: none;
+    display: inline-block;
+    background: #0057B8;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+}
+.nvs-btn-explorar:hover {
+    background: #004494;
+}
+
+
+/* --------------------------------------------------------------------------
+   [06] CLIENTES: COMPRAS REALIZADAS (HISTORIAL DE PEDIDOS)
+   -------------------------------------------------------------------------- */
+.nvs-pedidos-container {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 35px;
+    background: #1c1c1c;
+    border-radius: 10px;
+    border: 1px solid #333;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.nvs-retorno-link {
+    color: #0077ff;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 15px;
+    transition: color 0.2s;
+}
+.nvs-retorno-link:hover {
+    color: #005cd6;
+}
+
+.nvs-header-seccion {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 15px;
+}
+
+.nvs-header-seccion h2 {
+    font-weight: bold;
+    font-size: 28px;
+    color: #ffffff;
+    margin: 0;
+}
+
+.nvs-header-seccion p {
+    margin: 5px 0 0 0;
+    color: #a1a1a6;
+    font-size: 14px;
+}
+
+.nvs-tabla-scroll {
+    overflow-x: auto;
+}
+
+.nvs-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 13px;
+    background: #1c1c1c;
+}
+
+.nvs-tabla thead tr {
+    background: #242424;
+    border-bottom: 1px solid #333;
+}
+
+.nvs-tabla th {
+    padding: 15px;
+    color: #dcdcdc;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+.nvs-tabla tbody tr {
+    border-bottom: 1px solid #333;
+    background: transparent;
+}
+
+.nvs-tabla td {
+    padding: 18px 15px;
+    vertical-align: middle;
+}
+
+.nvs-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    border: 1px solid;
+    white-space: nowrap;
+}
+.nvs-badge-pendiente { background: #3d2a00; color: #ffb83d; border-color: #5c3e00; }
+.nvs-badge-pagado { background: #003314; color: #2ecc71; border-color: #004d1f; }
+.nvs-badge-enviado { background: #002244; color: #66b2ff; border-color: #003366; }
+.nvs-badge-error { background: #3d000a; color: #ff4d6a; border-color: #5c000f; }
+
+.nvs-tracking-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #242424;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid #444;
+}
+
+.nvs-tracking-code {
+    font-family: monospace;
+    font-weight: bold;
+    color: #66b2ff;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.nvs-tracking-btn {
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+    transition: transform 0.1s ease;
+    line-height: 1;
+}
+
+
+/* --------------------------------------------------------------------------
+   [07] CORE DE ENTRADAS Y FORMULARIOS (LOGIN / REGISTRO / EDICIÓN)
+   -------------------------------------------------------------------------- */
+.form-card {
+    background: #1c1c1c;
+    border: 1px solid #333;
+    padding: 35px;
+    width: 100%;
+    max-width: 550px;
+    margin: 40px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-grupo label {
+    font-size: 14px;
+    color: #a1a1a6;
+    font-weight: 500;
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #242424;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus {
+    border-color: #0077ff;
+}
+
+.btn-guardar {
+    width: 100%;
+    padding: 12px;
+    background: #0077ff;
+    border: none;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 10px;
+}
+.btn-guardar:hover {
+    background: #005cd6;
+}
+
+/* Clases específicas de autenticación */
+.nvs-auth-wrapper {
+    background: #1c1c1c;
+    padding: 40px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    width: 360px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
+}
+.nvs-auth-wrapper-register {
+    width: 380px;
+}
+
+.nvs-auth-input {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 12px 0;
+    border-radius: 6px;
+    border: 1px solid #444;
+    outline: none;
+    background: #242424;
+    color: #fff;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+.nvs-auth-input:focus {
+    border-color: #0077ff;
+}
+.nvs-auth-input::placeholder {
+    color: #777;
+}
+
+.nvs-auth-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 6px;
+    background: #0077ff;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.nvs-auth-btn:hover {
+    background: #005cd6;
+}
+
+.nvs-auth-links {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 13px;
+    color: #a1a1a6;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+    line-height: 1.6;
+}
+.nvs-auth-links p { margin: 5px 0; }
+.nvs-auth-links a {
+    color: #0077ff;
+    text-decoration: none;
+    font-weight: 500;
+}
+.nvs-auth-links a:hover {
+    text-decoration: underline;
+}
+
+.nvs-alert-error {
+    background: rgba(255, 77, 109, 0.1);
+    color: #ff4d6a;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 77, 109, 0.2);
+    text-align: center;
+}
+
+
+/* --------------------------------------------------------------------------
+   [08] ECOSISTEMA DEL PANEL DE CONTROL (ADMIN GENERAL DASHBOARD)
+   -------------------------------------------------------------------------- */
+.admin-header {
+    background: #1c1c1c;
+    border-bottom: 1px solid #333;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-panel {
+    height: 32px;
+    width: auto;
+}
+
+.admin-header h1 {
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: bold;
+    margin: 0;
+}
+
+.btn-volver {
+    background: #242424;
+    color: #ffffff;
+    border: 1px solid #444;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    transition: background 0.2s;
+}
+.btn-volver:hover {
+    background: #333;
+}
+
+.admin-layout {
+    display: flex;
+    min-height: calc(100vh - 63px);
+}
+
+.admin-sidebar {
+    width: 260px;
+    background: #121214;
+    border-right: 1px solid #333;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar-link {
+    padding: 14px 16px;
+    background: #1c1c1c;
+    border-radius: 6px;
+    border: 1px solid #333;
+    text-decoration: none;
+    color: #a1a1a6;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+.sidebar-link:hover {
+    background: #242424;
+    color: #ffffff;
+}
+.sidebar-link.activo {
+    background: #242424;
+    color: #0077ff;
+    border-left: 4px solid #0077ff;
+    font-weight: bold;
+}
+
+.admin-content {
+    flex: 1;
+    padding: 40px;
+    background: #0c0c0e;
+    overflow-y: auto;
+}
+
+.titulo-admin {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
+/* Tablas Administrativas standard */
+.tabla-admin {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.tabla-admin table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1c1c1c;
+    text-align: left;
+    font-size: 14px;
+}
+
+.tabla-admin th {
+    background: #242424;
+    padding: 15px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.tabla-admin td {
+    padding: 15px;
+    border-top: 1px solid #333;
+    color: #e6e6e6;
+    vertical-align: middle;
+}
+.tabla-admin tr:hover td {
+    background: #242424;
+}
+
+/* Botones de acción del panel */
+.btn-agregar {
+    display: inline-block;
+    background: #0077ff;
+    padding: 10px 20px;
+    margin-bottom: 25px;
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+.btn-agregar:hover {
+    background: #005cd6;
+}
+
+.btn-editar {
+    background: rgba(102, 178, 255, 0.1);
+    border: 1px solid rgba(102, 178, 255, 0.2);
+    padding: 6px 14px;
+    margin-right: 5px;
+    border-radius: 4px;
+    color: #66b2ff;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-editar:hover {
+    background: rgba(102, 178, 255, 0.2);
+}
+
+.btn-eliminar {
+    background: rgba(255, 77, 109, 0.05);
+    border: 1px solid rgba(255, 77, 109, 0.2);
+    padding: 6px 14px;
+    border-radius: 4px;
+    color: #ff4d6a;
+    font-weight: bold;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-eliminar:hover {
+    background: rgba(255, 77, 109, 0.15);
+}
+
+canvas {
+    background: #1c1c1c;
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    max-width: 100%;
+}
+
+
+/* --------------------------------------------------------------------------
+   [09] ADMIN: GESTIÓN DE FILTROS Y RENDIMIENTO DE PEDIDOS
+   -------------------------------------------------------------------------- */
+.nvs-orders-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.nvs-orders-metrics-box {
+    display: flex;
+    gap: 15px;
+}
+
+.nvs-metric-card {
+    border: 1px solid #333;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-align: center;
+    min-width: 100px;
+}
+.nvs-metric-card-total { background: #242424; }
+.nvs-metric-card-pending { background: rgba(212, 142, 0, 0.08); border-color: rgba(212, 142, 0, 0.2); }
+.nvs-metric-card-sent { background: rgba(46, 204, 113, 0.08); border-color: rgba(46, 204, 113, 0.2); }
+
+.nvs-metric-card .nvs-metric-title {
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.nvs-metric-card-total .nvs-metric-title { color: #a1a1a6; }
+.nvs-metric-card-pending .nvs-metric-title { color: #ffb83d; }
+.nvs-metric-card-sent .nvs-metric-title { color: #2ecc71; }
+
+.nvs-metric-card .nvs-metric-value {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 2px;
+}
+.nvs-metric-card-total .nvs-metric-value { color: #ffffff; }
+.nvs-metric-card-pending .nvs-metric-value { color: #ffb83d; }
+.nvs-metric-card-sent .nvs-metric-value { color: #2ecc71; }
+
+.nvs-filters-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    font-size: 13px;
+}
+
+.nvs-filter-tab {
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+    background: #1c1c1c;
+    color: #eee;
+    border: 1px solid #333;
+}
+.nvs-filter-tab-all.nvs-active { background: #0057B8; border-color: #0057B8; color: white; }
+.nvs-filter-tab-pending.nvs-active { background: rgba(212, 142, 0, 0.15); border-color: rgba(212, 142, 0, 0.4); color: #ffb83d; }
+.nvs-filter-tab-paid.nvs-active { background: rgba(46, 204, 113, 0.12); border-color: rgba(46, 204, 113, 0.3); color: #2ecc71; }
+.nvs-filter-tab-sent.nvs-active { background: rgba(0, 87, 184, 0.15); border-color: rgba(0, 87, 184, 0.4); color: #66b2ff; }
+
+.nvs-flash-container {
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid;
+}
+.nvs-flash-success { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border-color: rgba(46, 204, 113, 0.3); }
+.nvs-flash-danger { background: rgba(255, 77, 109, 0.15); color: #ff4d6a; border-color: rgba(255, 77, 109, 0.3); }
+
+
+/* --------------------------------------------------------------------------
+   [10] ADMIN: DETALLE DE DESPACHO LOGÍSTICO INDIVIDUAL
+   -------------------------------------------------------------------------- */
+.nvs-admin-det-wrapper {
+    width: 100%;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.nvs-admin-top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.nvs-admin-top-header h2 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 30px;
+    letter-spacing: -0.8px;
+    color: #ffffff;
+}
+
+.nvs-admin-top-header p {
+    margin: 5px 0 0 0;
+    color: #a1a1a6;
+    font-size: 14px;
+}
+
+.nvs-badge-admin-estado {
+    background: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    border: 1px solid rgba(46, 204, 113, 0.2);
+    text-transform: uppercase;
+}
+
+.nvs-admin-grid-layout {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.nvs-admin-col-izq {
+    flex: 1 1 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.nvs-admin-col-der {
+    flex: 1 1 350px;
+    background: #1c1c1c;
+    border-radius: 10px;
+    border: 1px solid #333;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    align-self: flex-start;
+}
+
+.nvs-admin-card-box {
+    background: #1c1c1c;
+    border-radius: 10px;
+    border: 1px solid #333;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.nvs-admin-card-box h3,
+.nvs-admin-col-der h3 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+    color: #ffffff;
+}
+
+.nvs-admin-card-box p {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #a1a1a6;
+}
+
+.nvs-admin-card-box p strong {
+    color: #ffffff;
+}
+
+.nvs-admin-indicaciones-box {
+    margin-top: 15px;
+    font-size: 13px;
+    background: #242424;
+    padding: 12px;
+    border-radius: 6px;
+    border-left: 3px solid #0077ff;
+    color: #e6e6e6;
+    line-height: 1.4;
+}
+
+.nvs-btn-print-label {
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    padding: 14px;
+    background: #242424;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    margin-bottom: 25px;
+    transition: background 0.2s;
+}
+.nvs-btn-print-label:hover {
+    background: #333;
+}
+
+.nvs-tracking-form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: #a1a1a6;
+    letter-spacing: 0.5px;
+}
+
+.nvs-tracking-input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #242424;
+    color: #ffffff;
+    outline: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+.nvs-tracking-input:focus {
+    border-color: #0077ff;
+}
+
+.nvs-item-desglose-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #333;
+    padding-bottom: 12px;
+}
+.nvs-item-desglose-row:last-of-type {
+    border-bottom: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   [11] FOOTER GENERAL DE LA TIENDA
+   -------------------------------------------------------------------------- */
+footer {
+    background-color: #1c1c1c;
+    color: #a1a1a6;
+    text-align: center;
+    padding: 25px 10px;
+    margin-top: 60px;
+    border-top: 1px solid #0077ff;
+    font-size: 14px;
+}
+
+footer a {
+    color: #0077ff;
+    text-decoration: none;
+    font-weight: 500;
+}
+footer a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Datos de Entrega - Nuvus Store{% endblock %}
+
+{% block content %}
+<!-- Contenedor general adaptado al modo oscuro de tu app -->
+<div class="carrito-container" style="max-width: 650px; margin: 40px auto; padding: 35px; background: #1c1c1c; border-radius: 10px; border: 1px solid #333; color: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
+    
+    <a href="{{ url_for('carrito') }}" style="color: #0077ff; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 20px; font-size: 15px; transition: 0.2s;">⬅ Volver al carrito</a>
+
+    <h2 style="font-weight: bold; font-size: 26px; margin-bottom: 5px; color: #ffffff; border: none; text-align: left;">Datos de Envío</h2>
+    <p style="margin: 0 0 25px 0; color: #a1a1a6; font-size: 14px; text-align: left; border-bottom: 1px solid #333; padding-bottom: 15px;">
+        Por favor ingresa la información del domicilio donde deseas recibir tu pedido.
+    </p>
+
+    <form action="{{ url_for('checkout') }}" method="POST" style="display: flex; flex-direction: column; gap: 18px;">
+        
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;">
+                <label style="display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; color: #aaa; letter-spacing: 0.5px;">Nombre de quien recibe</label>
+                <input type="text" name="destinatario" required placeholder="Ej: Juan Pérez" style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #444; background-color: #121212; color: white; outline: none; font-size: 14px; box-sizing: border-box; transition: 0.3s;">
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+                <label style="display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; color: #aaa; letter-spacing: 0.5px;">Teléfono de contacto</label>
+                <input type="tel" name="telefono" required placeholder="Ej: 351123456" style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #444; background-color: #121212; color: white; outline: none; font-size: 14px; box-sizing: border-box; transition: 0.3s;">
+            </div>
+        </div>
+
+        <div>
+            <label style="display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; color: #aaa; letter-spacing: 0.5px;">Dirección (Calle, número, piso/depto)</label>
+            <input type="text" name="direccion" required placeholder="Ej: Av. Colón 1234, Piso 3 depto B" style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #444; background-color: #121212; color: white; outline: none; font-size: 14px; box-sizing: border-box; transition: 0.3s;">
+        </div>
+
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 150px;">
+                <label style="display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; color: #aaa; letter-spacing: 0.5px;">Ciudad</label>
+                <input type="text" name="ciudad" required placeholder="Ej: Córdoba" style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #444; background-color: #121212; color: white; outline: none; font-size: 14px; box-sizing: border-box; transition: 0.3s;">
+            </div>
+            <div style="flex: 1; min-width: 150px;">
+                <label style="display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; color: #aaa; letter-spacing: 0.5px;">Provincia / Estado</label>
+                <input type="text" name="provincia" required placeholder="Ej: Córdoba" style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #444; background-color: #121212; color: white; outline: none; font-size: 14px; box-sizing: border-box; transition: 0.3s;">
+            </div>
+            <div style="flex: 1; min-width: 100px; max-width: 150px;">
+                <label style="display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; color: #aaa; letter-spacing: 0.5px;">Cód. Postal</label>
+                <input type="text" name="codigo_postal" required placeholder="Ej: 5000" style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #444; background-color: #121212; color: white; outline: none; font-size: 14px; box-sizing: border-box; transition: 0.3s;">
+            </div>
+        </div>
+
+        <div>
+            <label style="display: block; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; color: #aaa; letter-spacing: 0.5px;">Indicaciones adicionales para la entrega (Opcional)</label>
+            <textarea name="indicaciones" rows="3" placeholder="Ej: Portón negro, timbre roto, dejar en portería..." style="width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #444; background-color: #121212; color: white; outline: none; font-size: 14px; resize: none; box-sizing: border-box; transition: 0.3s; font-family: inherit;"></textarea>
+        </div>
+
+        <!-- Pie de Formulario: Totalizador e Inicio de Transacción con Botón Azul Institucional -->
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #333; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <span style="font-size: 13px; color: #aaa; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">Total a pagar:</span>
+                <div style="font-size: 24px; font-weight: bold; color: #ffffff; margin-top: 2px;">${{ "{:,.0f}".format(total) }}</div>
+            </div>
+            <button type="submit" style="background-color: #0057B8; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 15px; padding: 12px 30px; cursor: pointer; transition: 0.3s;">
+                Continuar al pago
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Pequeño script para simular el comportamiento focus en los campos oscuros -->
+<script>
+    document.querySelectorAll('input, textarea').forEach(element => {
+        element.addEventListener('focus', () => {
+            element.style.borderColor = '#cccecf';
+            element.style.boxShadow = '0 0 6px #0057B8';
+        });
+        element.addEventListener('blur', () => {
+            element.style.borderColor = '#444';
+            element.style.boxShadow = 'none';
+        });
+    });
+</script>
+{% endblock %}

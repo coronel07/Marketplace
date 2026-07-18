@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Etiqueta de Envío #NVS-{{ pedido.id }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #ffffff;
+            color: #000000;
+            padding: 20px;
+            margin: 0;
+        }
+        .etiqueta-box {
+            width: 480px;
+            border: 3px solid #000000;
+            padding: 25px;
+            margin: 20px auto;
+            box-sizing: border-box;
+        }
+        .seccion {
+            border-bottom: 2px solid #000000;
+            padding: 15px 0;
+        }
+        .no-border {
+            border-bottom: none;
+        }
+        .row-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .barcode-placeholder {
+            background: #000000;
+            height: 60px;
+            margin: 15px 0 5px 0;
+            position: relative;
+        }
+        .barcode-placeholder::after {
+            content: "NVS-TRK-{{ pedido.id }}";
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: bold;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            letter-spacing: 5px;
+        }
+        @media print {
+            body { padding: 0; }
+            .etiqueta-box { margin: 0 auto; border-width: 2px; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print" style="max-width: 480px; margin: 10px auto; text-align: center;">
+        <button onclick="window.print()" style="padding: 12px 25px; background: #000000; color: #ffffff; border: none; font-weight: bold; cursor: pointer; border-radius: 8px; font-size: 14px;">🖨️ Imprimir Etiqueta de Paquete</button>
+    </div>
+
+    <div class="etiqueta-box">
+        <!-- Encabezado -->
+        <div class="seccion" style="padding-top: 0;">
+            <div class="row-flex">
+                <span style="font-size: 22px; font-weight: 900; letter-spacing: -1px;">NUVUS LOGÍSTICA</span>
+                <span style="font-size: 12px; font-weight: bold; border: 2px solid #000000; padding: 4px 8px; text-transform: uppercase;">Envío prioritario</span>
+            </div>
+        </div>
+
+        <!-- Código de Barras de Distribución -->
+        <div class="seccion" style="text-align: center;">
+            <span style="font-size: 10px; font-weight: bold; text-transform: uppercase;">Identificador de Bulto</span>
+            <div class="barcode-placeholder"></div>
+        </div>
+
+        <!-- Datos del Destinatario -->
+        <div class="seccion">
+            <span style="font-size: 10px; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 8px; color: #555;">Destinatario</span>
+            <span style="font-size: 18px; font-weight: bold; display: block; margin-bottom: 5px;">{{ pedido.destinatario }}</span>
+            <span style="font-size: 14px; font-weight: bold; display: block;">Tel: {{ pedido.telefono }}</span>
+        </div>
+
+        <!-- Dirección de Entrega -->
+        <div class="seccion">
+            <span style="font-size: 10px; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 8px; color: #555;">Dirección de Entrega</span>
+            <span style="font-size: 16px; font-weight: bold; display: block; margin-bottom: 5px;">{{ pedido.direccion }}</span>
+            <span style="font-size: 15px; font-weight: bold; display: block;">{{ pedido.ciudad }} - {{ pedido.provincia }}</span>
+            <span style="font-size: 14px; font-weight: bold; display: block; margin-top: 5px;">CÓDIGO POSTAL: {{ pedido.codigo_postal }}</span>
+        </div>
+
+        <!-- Remitente e Indicaciones -->
+        <div class="seccion no-border" style="padding-bottom: 0;">
+            <div class="row-flex" style="margin-bottom: 12px;">
+                <div>
+                    <span style="font-size: 9px; font-weight: bold; text-transform: uppercase; display: block; color: #555;">Remitente</span>
+                    <span style="font-size: 11px; font-weight: bold;">Nuvus Store Oficial</span>
+                </div>
+                <div style="text-align: right;">
+                    <span style="font-size: 9px; font-weight: bold; text-transform: uppercase; display: block; color: #555;">ID Pedido</span>
+                    <span style="font-size: 11px; font-weight: bold;">#NVS-{{ pedido.id }}</span>
+                </div>
+            </div>
+            {% if pedido.indicaciones %}
+            <div style="background: #f5f5f5; border: 1px dashed #000000; padding: 10px; font-size: 11px; font-weight: bold; line-height: 1.3;">
+                NOTAS: {{ pedido.indicaciones }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

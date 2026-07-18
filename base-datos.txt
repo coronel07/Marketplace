@@ -1,0 +1,112 @@
+-- =====================================================
+-- REINICIAR BASE DE DATOS
+-- =====================================================
+DROP DATABASE IF EXISTS tienda_itr;
+CREATE DATABASE tienda_itr;
+USE tienda_itr;
+
+-- =====================================================
+-- TABLA DE CATEGORÍAS
+-- =====================================================
+CREATE TABLE categorias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+-- Categorías base
+INSERT INTO categorias (nombre) VALUES
+('Útiles'),
+('Ropa'),
+('Otros');
+
+-- =====================================================
+-- TABLA DE PRODUCTOS
+-- =====================================================
+CREATE TABLE productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(200) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10,2) NOT NULL,
+    stock INT DEFAULT 0,
+    imagen VARCHAR(255),
+    categoria_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+);
+
+-- =====================================================
+-- PRODUCTOS ORIGINALES
+-- =====================================================
+
+-- ÚTILES
+INSERT INTO productos (nombre, descripcion, precio, imagen, stock, categoria_id) VALUES
+('Lapicera BIC azul', 'Lapicera clásica azul.', 350.00, 'lapicera_bic.png', 100, 1),
+('Lápiz negro Faber Castell', 'Lápiz de grafito calidad escolar.', 300.00, 'lapiz_faber.png', 150, 1),
+('Cuaderno A4 Rivadavia', 'Cuaderno rayado tamaño A4.', 2500.00, 'cuaderno_rivadavia.png', 40, 1),
+('Cartuchera lona', 'Cartuchera resistente ideal para escuela.', 3500.00, 'cartuchera_lona.png', 25, 1),
+('Carpeta N°3 escolar', 'Carpeta tamaño estándar escolar.', 1800.00, 'carpeta3.png', 30, 1);
+
+-- ROPA
+INSERT INTO productos (nombre, descripcion, precio, imagen, stock, categoria_id) VALUES
+('Remera Colegio ITR', 'Remera oficial del instituto.', 7500.00, 'remera_itr.png', 20, 2),
+('Buzo ITR bordado', 'Buzo grueso bordado.', 15000.00, 'buzo_itr.png', 15, 2);
+
+-- OTROS
+INSERT INTO productos (nombre, descripcion, precio, imagen, stock, categoria_id) VALUES
+('Botella térmica', 'Botella térmica de acero.', 5000.00, 'botella_termica.png', 30, 3),
+('Mochila reforzada', 'Mochila escolar de alta resistencia.', 12000.00, 'mochila_reforzada.png', 20, 3),
+('Set artístico', 'Set completo de dibujo artístico.', 8000.00, 'set_artistico.png', 10, 3);
+
+-- =====================================================
+-- PRODUCTOS AÑADIDOS - SEGUNDO LOTE
+-- =====================================================
+INSERT INTO productos (nombre, descripcion, precio, stock, imagen, categoria_id) VALUES
+('Lapicera ITR', 'Lapicera metálica con logo del ITR.', 1800, 50, 'lapicera_itr.jpg', 1),
+('Cartuchera', 'Cartuchera azul con cierre resistente y logo ITR.', 3000, 25, 'cartuchera_itr.jpg', 1),
+('Lapicera Negra ITR', 'Lapicera premium color negro con detalles plateados.', 2700, 30, 'lapicera_negra_itr.jpg', 1),
+('Sticker ITR', 'Sticker adhesivo con logo institucional.', 500, 200, 'sticker_itr.jpg', 3),
+('Libreta ITR', 'Libreta tamaño A5 con tapa dura, diseño institucional.', 3500, 40, 'libreta_itr.jpg', 1),
+('Botella ITR', 'Botella de aluminio con logo del ITR, 500 ml.', 4200, 60, 'botella_itr.jpg', 3),
+('Tablero Acrílico ITR', 'Tablero acrílico de exposición con soporte.', 12500, 10, 'tablero_itr.jpg', 3),
+('Marcadores', 'Set de 4 marcadores de colores para pizarra.', 11000, 20, 'marcadores_itr.jpg', 1),
+('Remera ITR', 'Remera gris con logo bordado del ITR.', 22000, 15, 'remera_itr.jpg', 2),
+('Pelota ITR', 'Pelota de fútbol edición especial ITR.', 18000, 12, 'pelota_itr.jpg', 3),
+('Llavero ITR', 'Llavero personalizado con diseño 3D del ITR.', 3500, 30, 'llavero_itr.jpg', 3),
+('Calculadora', 'Calculadora científica ideal para estudiantes.', 9500, 18, 'calculadora_itr.jpg', 1),
+('Set de botones', 'Set de pines y botones institucionales del ITR.', 2500, 50, 'botones_itr.jpg', 3);
+
+-- =====================================================
+-- TABLA DE USUARIOS
+-- =====================================================
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  rol ENUM('cliente', 'admin') DEFAULT 'cliente',
+  fecha_registro DATETIME DEFAULT NOW()
+);
+
+-- =====================================================
+-- TABLA DE PEDIDOS
+-- =====================================================
+CREATE TABLE pedidos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  usuario_id INT NOT NULL,
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  total DECIMAL(10,2),
+  estado ENUM('pendiente','pagado','enviado','cancelado') DEFAULT 'pendiente',
+  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+-- =====================================================
+-- TABLA DETALLE DE PEDIDO
+-- =====================================================
+CREATE TABLE detalle_pedido (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  pedido_id INT NOT NULL,
+  producto_id INT NOT NULL,
+  cantidad INT NOT NULL,
+  precio_unitario DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
+  FOREIGN KEY (producto_id) REFERENCES productos(id)
+);

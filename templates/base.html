@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Nuvus Store{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}"> -->
+</head>
+
+<body>
+
+    {% include 'navbar.html' %}
+
+    <main class="contenido">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% include 'footer.html' %}
+
+</body>
+
+</html>

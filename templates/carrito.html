@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Carrito - Nuvus Store{% endblock %}
+
+{% block content %}
+<div style="max-width: 950px; margin: 40px auto; padding: 35px; background: #1c1c1c; border-radius: 10px; border: 1px solid #333; color: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); font-family: system-ui, -apple-system, sans-serif; box-sizing: border-box;">
+
+    <!-- Enlace de Retorno -->
+    <a href="{{ url_for('index') }}" style="color: #0077ff; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 20px; font-size: 15px; transition: 0.2s;">⬅ Volver a inicio</a>
+
+    <!-- Encabezado de Sección -->
+    <div style="margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 15px;">
+        <h2 style="font-weight: bold; font-size: 28px; color: #ffffff; margin: 0;">Tu Carrito de Compras</h2>
+        <p style="margin: 5px 0 0 0; color: #a1a1a6; font-size: 14px;">Revisa tus artículos seleccionados antes de proceder a la pasarela de pago.</p>
+    </div>
+
+    <!-- Alertas de Stock -->
+    {% if error %}
+    <div style="display: block; background: rgba(255, 77, 109, 0.1); color: #ff4d6a; padding: 15px; border-radius: 6px; margin-bottom: 25px; font-weight: 600; text-align: center; border: 1px solid rgba(255, 77, 109, 0.2); font-size: 14px;">
+        ⚠️ {{ error }}
+    </div>
+    {% endif %}
+
+    {% if items %}
+    <!-- LISTADO DE ARTÍCULOS EN CARRITO -->
+    <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px;">
+        {% for item in items %}
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px; background: #242424; border-radius: 6px; border: 1px solid #333; gap: 20px; box-sizing: border-box;">
+            
+            <!-- Contenedor Visual e Informativo -->
+            <div style="display: flex; align-items: center; gap: 20px;">
+                {% if item.imagen %}
+                    <img src="{{ url_for('static', filename='img/' + item.imagen) }}" alt="{{ item.nombre }}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 6px; background: #1c1c1c; border: 1px solid #444; display: block;">
+                {% else %}
+                    <div style="width: 70px; height: 70px; background: #1c1c1c; border-radius: 6px; border: 1px solid #444; display: flex; align-items: center; justify-content: center; color: #666; font-size: 20px;">📦</div>
+                {% endif %}
+
+                <div>
+                    <h3 style="margin: 0 0 6px 0; font-size: 16px; font-weight: bold; color: #ffffff; line-height: 1.2;">{{ item.nombre }}</h3>
+                    <p style="margin: 0 0 4px 0; font-size: 13px; color: #0077ff; font-weight: 600;">Cantidad seleccionada: <strong>{{ item.cantidad }}</strong></p>
+                    <p style="margin: 0; font-size: 12px; color: #888;">Precio unitario: ${{ "{:,.0f}".format(item.precio) }}</p>
+                </div>
+            </div>
+
+            <!-- Subtotal y Acción de Remoción -->
+            <div style="display: flex; align-items: center; gap: 25px;">
+                <div style="text-align: right; white-space: nowrap;">
+                    <div style="font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Subtotal</div>
+                    <div style="font-size: 16px; font-weight: bold; color: #ffffff;">${{ "{:,.0f}".format(item.precio * item.cantidad) }}</div>
+                </div>
+
+                <form action="{{ url_for('eliminar_carrito', id=item.id) }}" method="POST" style="margin: 0; padding: 0; display: inline-block;">
+                    <input type="hidden" name="toda" value="1">
+                    <button type="submit" style="background: rgba(255, 77, 109, 0.05); border: 1px solid rgba(255, 77, 109, 0.2); color: #ff4d6a; width: 36px; height: 36px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.2s; margin: 0; padding: 0;">
+                        ❌
+                    </button>
+                </form>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- PIE DEL COMPROBANTE TOTALMENTE REPARADO -->
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 35px; border-top: 1px solid #333; margin-top: 35px; width: 100%; box-sizing: border-box; gap: 20px; flex-wrap: wrap;">
+        
+        <!-- Bloque Izquierdo: Precios -->
+        <div style="flex: 1; min-width: 200px; text-align: left;">
+            <span style="font-size: 13px; color: #a1a1a6; display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Monto Neto Consolidado</span>
+            <span style="font-size: 26px; font-weight: bold; color: #ffffff; display: block; line-height: 1.2; white-space: nowrap;">
+                Total a Pagar: ${{ "{:,.0f}".format(total) }}
+            </span>
+        </div>
+
+        <!-- Bloque Derecho: Formulario + Botón alineado a la derecha -->
+        <form action="{{ url_for('checkout') }}" method="GET" style="margin: 0; padding: 0; display: block;">
+            <button type="submit" style="background: #0077ff; color: #ffffff; border: none; padding: 14px 32px; font-size: 15px; font-weight: bold; border-radius: 6px; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 119, 255, 0.3); transition: all 0.2s ease; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#005cd6'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='#0077ff'; this.style.transform='translateY(0)';" onmousedown="this.style.transform='translateY(1px)'">
+                Proceder al pago ➡
+            </button>
+        </form>
+
+    </div>
+
+    {% else %}
+    <!-- CONTENEDOR DE ESTADO VACÍO -->
+    <div style="text-align: center; padding: 60px 0;">
+        <div style="font-size: 50px; margin-bottom: 15px;">🛒</div>
+        <p style="font-size: 16px; color: #a1a1a6; margin: 0 0 25px 0;">No hay productos agregados en tu carrito de compras.</p>
+        <a href="{{ url_for('index') }}" style="text-decoration: none; display: inline-block; background: #0057B8; color: #ffffff; font-weight: bold; padding: 12px 24px; border-radius: 6px; font-size: 14px; transition: background 0.2s; border: none; margin: 0;" onmouseover="this.style.background='#004494'" onmouseout="this.style.background='#0057B8'">
+            Explorar Productos
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

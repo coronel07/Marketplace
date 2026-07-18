@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - Nuvus Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+
+<div class="container">
+    <h1 style="font-size: 36px; margin-bottom: 25px; letter-spacing: -0.5px;">Registrate aquí</h1>
+
+    <div class="nvs-auth-wrapper nvs-auth-wrapper-register">
+        {% if error %}
+        <div class="nvs-alert-error">
+            ⚠️ {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="{{ url_for('register') }}" method="POST">
+            <input type="email" name="email" placeholder="Email" class="nvs-auth-input" required>
+            <input type="text" name="nombre" placeholder="Nombre del usuario" class="nvs-auth-input" required>
+            <input type="password" name="password" placeholder="Contraseña" class="nvs-auth-input" required>
+            <input type="password" name="password2" placeholder="Contraseña confirmada" class="nvs-auth-input" required>
+
+            <button type="submit" class="nvs-auth-btn">Confirmar registro</button>
+        </form>
+
+        <div class="nvs-auth-links">
+            ¿Tenés una cuenta ya? <a href="{{ url_for('login') }}">Inicia sesión</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

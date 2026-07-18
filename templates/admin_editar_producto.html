@@ -1,0 +1,90 @@
+{% extends "admin_base.html" %}
+{% set section = "productos" %}
+
+{% block contenido %}
+
+<h2 class="titulo-admin">Editar Producto</h2>
+
+<div class="form-card">
+    <!-- El enctype="multipart/form-data" es obligatorio para que viajen las fotos -->
+    <form action="{{ url_for('admin_editar_producto', id=producto.id) }}" method="POST" enctype="multipart/form-data">
+
+        <div class="form-grupo">
+            <label>Nombre del producto</label>
+            <input type="text" name="nombre" value="{{ producto.nombre }}" required>
+        </div>
+
+        <div class="form-grupo">
+            <label>Precio</label>
+            <input type="number" name="precio" step="0.01" value="{{ producto.precio }}" required>
+        </div>
+
+        <div class="form-grupo">
+            <label>Categoría</label>
+            <select name="categoria_id" required>
+                {% for c in categorias %}
+                <option value="{{ c.id }}" {% if producto.categoria_id==c.id %}selected{% endif %}>
+                    {{ c.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-grupo">
+            <label>Descripción</label>
+            <textarea name="descripcion" rows="4">{{ producto.descripcion }}</textarea>
+        </div>
+
+        <!-- SOLUCIÓN AL RENDER DE LA IMAGEN ACTUAL -->
+        <div class="form-grupo">
+            <label>Imagen de portada actual</label>
+            {% if producto.imagen %}
+                <!-- Si el producto tiene imagen asignada, la muestra -->
+                <img src="{{ url_for('static', filename='img/' + producto.imagen) }}"
+                    style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; display: block; margin-top: 5px; border: 1px solid #444;">
+            {% else %}
+                <!-- Si no tiene, muestra un placeholder de respaldo para que no quede la pantalla rota -->
+                <div style="width: 120px; height: 120px; background: #242424; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 13px; border: 1px dashed #444; margin-top: 5px;">
+                    Sin portada 🖼️
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-grupo">
+            <label>Cambiar imagen de portada principal</label>
+            <input type="file" name="imagen" accept="image/*">
+        </div>
+
+        <!-- SOLUCIÓN PARA QUE TE DEJE PONER MÁS DE UNA FOTO JUNTA -->
+        <div class="form-grupo" style="margin-top: 25px; border-top: 1px solid #333; padding-top: 20px;">
+            <label style="font-weight: bold; color: #66b2ff;">Añadir imágenes al Carrusel secundario</label>
+            <p style="font-size: 12px; color: #a1a1a6; margin: 4px 0 10px 0;">Mantené presionado la tecla <b>Ctrl</b> (o <b>Cmd</b> en Mac) para elegir 2 o más fotos juntas.</p>
+            
+            <!-- CLAVE: El atributo 'multiple' permite la selección masiva en la ventana de archivos -->
+            <input type="file" name="imagenes_carrusel" accept="image/*" multiple> 
+        </div>
+
+        <!-- VISUALIZADOR DE LAS IMÁGENES SECUNDARIAS DEL CARRUSEL -->
+        {% if producto.imagenes %}
+        <div class="form-grupo">
+            <label>Imágenes guardadas en el carrusel:</label>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                {% for img in producto.imagenes %}
+                <div style="position: relative; border: 1px solid #444; border-radius: 6px; overflow: hidden; background: #121212;">
+                    <img src="{{ url_for('static', filename='img/' + img.nombre_archivo) }}" style="width: 80px; height: 80px; object-fit: cover; display: block;">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="form-grupo" style="margin-top: 20px;">
+            <label>Stock</label>
+            <input type="number" name="stock" value="{{ producto.stock }}" required min="0">
+        </div>
+
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+    </form>
+</div>
+
+{% endblock %}

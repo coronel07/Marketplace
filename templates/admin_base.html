@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Carrito{% endblock %}
+
+{% block content %}
+
+<!-- SIDEBAR -->
+<aside class="admin-sidebar">
+    <a href="{{ url_for('admin_pedidos') }}" class="sidebar-link {% if section=='pedidos' %}activo{% endif %}">
+        Pedidos
+    </a>
+
+    <a href="{{ url_for('admin_productos') }}" class="sidebar-link {% if section=='productos' %}activo{% endif %}">
+        Productos
+    </a>
+
+    <a href="{{ url_for('admin_reportes') }}" class="sidebar-link {% if section=='reportes' %}activo{% endif %}">
+        Reporte de ventas
+    </a>
+
+    <a href="{{ url_for('admin_usuarios') }}" class="sidebar-link {% if section=='usuarios' %}activo{% endif %}">
+        Usuarios
+    </a>
+</aside>
+
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="admin-content">
+    {% block contenido %}
+    {% endblock %}
+</main>
+
+
+{% endblock %}

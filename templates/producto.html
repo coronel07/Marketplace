@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}{{ producto.nombre }} - Nuvus Store{% endblock %}
+
+{% block content %}
+<div class="nvs-volver-contenedor">
+    <a href="{{ url_for('index') }}" class="volver">⬅ Volver</a>
+</div>
+
+<!-- SECCIÓN IZQUIERDA: CARRUSEL MULTIMEDIA -->
+<div class="producto-img">
+    <div class="carrusel-contenedor" style="position: relative; width: 100%; max-width: 450px; margin: 0 auto;">
+        
+        <!-- Contenedor Foto Grande Principal -->
+        <div class="imagen-principal-wrapper" style="width: 100%; height: 400px; overflow: hidden; border-radius: 12px; border: 1px solid #333; background: #121212;">
+            <img id="foto-principal" src="{{ url_for('static', filename='img/' + producto.imagen) }}" alt="{{ producto.nombre }}" style="width: 100%; height: 100%; display: block; object-fit: contain;">
+        </div>
+
+        <!-- Tira de Miniaturas Navegables -->
+        <div class="carrusel-miniaturas" style="display: flex; gap: 10px; margin-top: 15px; overflow-x: auto; padding-bottom: 8px;">
+            
+            <!-- Miniatura de Portada (Siempre activa al inicio) -->
+            <img class="miniatura" src="{{ url_for('static', filename='img/' + producto.imagen) }}" onclick="cambiarImagen(this.src, this)" style="width: 65px; height: 65px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid #0077ff; opacity: 1; transition: all 0.2s ease; background: #242424;">
+            
+            <!-- Render dinámico de las fotos adicionales vinculadas -->
+            {% if producto.imagenes %}
+                {% for img in producto.imagenes %}
+                <img class="miniatura" src="{{ url_for('static', filename='img/' + img.nombre_archivo) }}" onclick="cambiarImagen(this.src, this)" style="width: 65px; height: 65px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid transparent; opacity: 0.6; transition: all 0.2s ease; background: #242424;">
+                {% endfor %}
+            {% endif %}
+
+        </div>
+        
+    </div>
+</div>
+
+<!-- SECCIÓN DERECHA: INFORMACIÓN Y ACCIÓN DE COMPRA -->
+<div class="producto-info">
+    <h2>{{ producto.nombre }}</h2>
+
+    {% if producto.stock > 0 %}
+    <span class="badge-stock">En stock</span>
+    <span style="margin-left: 10px; font-size: 13px; color: #a1a1a6; vertical-align: middle;">
+        ¡Quedan solo <strong style="color: #66b2ff;">{{ producto.stock }}</strong> unidades!
+    </span>
+    {% else %}
+    <span class="badge-no-stock">Sin stock</span>
+    {% endif %}
+
+    <p class="precio">
+        ${{ "{:,.0f}".format(producto.precio) }}
+    </p>
+
+    <!-- FORMULARIO CORREGIDO: Todo adentro para que Flask reciba las opciones de compra -->
+    <form action="{{ url_for('agregar_carrito', id=producto.id) }}" method="POST">
+        
+        {% if producto.colores %}
+        <div class="selector" style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px;">Color</label>
+            <select name="color" style="padding: 10px; border-radius: 6px; background: #242424; color: white; border: 1px solid #444; width: 100%; max-width: 250px; outline: none;">
+                {% for color in producto.colores %}
+                <option value="{{ color }}">{{ color }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+
+        {% if producto.talles %}
+        <div class="selector" style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px;">Talle</label>
+            <select name="talle" style="padding: 10px; border-radius: 6px; background: #242424; color: white; border: 1px solid #444; width: 100%; max-width: 250px; outline: none;">
+                {% for t in producto.talles %}
+                <option value="{{ t }}">{{ t }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+
+        {% if producto.stock > 0 %}
+        <button type="submit" class="btn-agregar">Agregar al carrito</button>
+        {% else %}
+        <button type="button" disabled class="btn-agregar" style="opacity: 0.5; cursor: not-allowed;">Sin stock disponible</button>
+        {% endif %}
+    </form>
+
+    {% if producto.descripcion %}
+    <div class="caracteristicas" style="margin-top: 30px;">
+        <h4>Descripción</h4>
+        <p>{{ producto.descripcion }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- LÓGICA DEL CARRUSEL EN CLIENTE -->
+<script>
+function cambiarImagen(url, elemento) {
+    // Cambia el recurso en la caja grande
+    document.getElementById('foto-principal').src = url;
+    
+    // Resetea todas las miniaturas a su estado base transparente
+    const miniaturas = document.querySelectorAll('.miniatura');
+    miniaturas.forEach(m => {
+        m.style.borderColor = 'transparent';
+        m.style.opacity = '0.6';
+    });
+    
+    // Activa visualmente la miniatura seleccionada
+    elemento.style.borderColor = '#0077ff';
+    elemento.style.opacity = '1';
+}
+</script>
+{% endblock %}

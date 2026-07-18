@@ -1,0 +1,51 @@
+{% extends "admin_base.html" %}
+{% set section = "productos" %}
+
+{% block contenido %}
+
+<h2 class="titulo-admin">Agregar Producto</h2>
+
+<div class="form-card">
+    <form action="{{ url_for('admin_agregar_producto') }}" method="POST" enctype="multipart/form-data">
+
+        <div class="form-grupo">
+            <label>Nombre del producto</label>
+            <input type="text" name="nombre" required>
+        </div>
+
+        <div class="form-grupo">
+            <label>Precio</label>
+            <input type="number" name="precio" step="0.01" required>
+        </div>
+
+        <div class="form-grupo">
+            <label>Categoría</label>
+            <select name="categoria_id" required>
+                <option value="">Seleccionar</option>
+                {% for c in categorias %}
+                <option value="{{ c.id }}">{{ c.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-grupo">
+            <label>Descripción</label>
+            <textarea name="descripcion" rows="4"></textarea>
+        </div>
+
+        <div class="form-grupo">
+            <label>Stock</label>
+            <input type="number" name="stock" required min="0">
+        </div>
+
+        <div class="form-grupo">
+            <label>Imagen (archivo)</label>
+            <input type="file" name="imagen" accept="image/*" required>
+        </div>
+
+        <button type="submit" class="btn-guardar">Guardar Producto</button>
+    </form>
+
+</div>
+
+{% endblock %}

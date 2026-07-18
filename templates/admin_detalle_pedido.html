@@ -1,0 +1,89 @@
+{% extends "admin_base.html" %}
+{% set section = "pedidos" %}
+
+{% block contenido %}
+<div class="nvs-admin-det-wrapper">
+    
+    <!-- Enlace de Retorno usando tus clases globales -->
+    <a href="{{ url_for('admin_pedidos') }}" class="nvs-retorno-link">⬅ Volver a pedidos</a>
+
+    <!-- Encabezado de Gestión -->
+    <div class="nvs-admin-top-header">
+        <div>
+            <h2>Gestionar Pedido #NVS-{{ pedido.id }}</h2>
+            <p>Asigna el código de seguimiento y descarga la documentación logística.</p>
+        </div>
+        <span class="nvs-badge-admin-estado">
+            {{ pedido.estado }}
+        </span>
+    </div>
+
+    <div class="nvs-admin-grid-layout">
+        
+        <!-- Lado izquierdo: Información de Envío y Despacho -->
+        <div class="nvs-admin-col-izq">
+            
+            <!-- Tarjeta de Datos de Entrega -->
+            <div class="nvs-admin-card-box">
+                <h3>Dirección de Entrega</h3>
+                
+                <p><strong>Destinatario:</strong> <span>{{ pedido.destinatario }}</span></p>
+                <p><strong>Teléfono de Contacto:</strong> <span style="color: #66b2ff;">📞 {{ pedido.telefono }}</span></p>
+                <p><strong>Dirección Domiciliaria:</strong> <span>{{ pedido.direccion }}</span></p>
+                <p><strong>Ciudad / CP:</strong> <span>{{ pedido.ciudad }} (C.P. {{ pedido.codigo_postal }})</span></p>
+                <p><strong>Provincia:</strong> <span>{{ pedido.provincia }}</span></p>
+                
+                {% if pedido.indicaciones %}
+                <div class="nvs-admin-indicaciones-box">
+                    <strong>Indicaciones de entrega:</strong><br>{{ pedido.indicaciones }}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Acciones Logísticas -->
+            <div class="nvs-admin-card-box">
+                <h3>Acciones de Despacho</h3>
+                
+                <!-- Botón para imprimir etiqueta -->
+                <a href="{{ url_for('admin_etiqueta_envio', id=pedido.id) }}" target="_blank" class="nvs-btn-print-label">
+                    🖨️ Generar Etiqueta de Envío
+                </a>
+
+                <form action="{{ url_for('admin_despachar_pedido', id=pedido.id) }}" method="POST">
+                    <label class="nvs-tracking-form-label">Ingresar Código de Seguimiento (Tracking ID)</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" name="codigo_seguimiento" value="{{ pedido.codigo_seguimiento or '' }}" class="nvs-tracking-input" required placeholder="Ej: AR987654321NV">
+                        <button type="submit" class="btn-guardar" style="width: auto; margin-top: 0; padding: 12px 25px;">
+                            Despachar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Lado derecho: Desglose de Artículos del Paquete -->
+        <div class="nvs-admin-col-der">
+            <h3>Artículos en el Paquete</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                {% for item in pedido.items %}
+                <div class="nvs-item-desglose-row">
+                    <div>
+                        <div style="font-weight: bold; color: #ffffff;">{{ item.producto.nombre }}</div>
+                        <span style="font-size: 13px; color: #a1a1a6;">Cantidad: <strong style="color: #0077ff;">x{{ item.cantidad }}</strong></span>
+                    </div>
+                    <span style="font-weight: bold; color: #ffffff;">${{ "{:,.0f}".format(item.precio_unitario * item.cantidad) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #333;">
+                <span style="font-weight: bold; color: #a1a1a6;">Total cobrado:</span>
+                <span style="font-size: 22px; font-weight: bold; color: #66b2ff;">${{ "{:,.0f}".format(pedido.total) }}</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

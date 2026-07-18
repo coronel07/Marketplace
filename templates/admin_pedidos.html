@@ -1,0 +1,142 @@
+{% extends "admin_base.html" %}
+{% set section = "pedidos" %}
+
+{% block contenido %}
+<!-- Contenedor blindado con color de fondo forzado para evitar pantallas blancas -->
+<div style="background: #0c0c0e; color: #ffffff; min-height: 100vh; width: 100%; font-family: system-ui, sans-serif; box-sizing: border-box;">
+
+    <!-- ENCABEZADO Y MÉTRICAS ALINEADOS -->
+    <div class="nvs-orders-dashboard-header">
+        <!-- Lado Izquierdo: Título y Descripción -->
+        <div>
+            <h2 class="titulo-admin" style="margin: 0; text-align: left; color: #ffffff;">Gestión de Pedidos</h2>
+            <p style="margin: 5px 0 0 0; color: #a1a1a6; font-size: 14px;">Monitorea los datos de entrega y actualiza los despachos en tiempo real.</p>
+        </div>
+
+        <!-- Lado Derecho: Tarjetas de métricas superiores -->
+        <div class="nvs-orders-metrics-box">
+            <div class="nvs-metric-card nvs-metric-card-total">
+                <div class="nvs-metric-title">Total</div>
+                <div class="nvs-metric-value">{{ total_pedidos if total_pedidos is defined else pedidos|length }}</div>
+            </div>
+            <div class="nvs-metric-card nvs-metric-card-pending">
+                <div class="nvs-metric-title">Pendientes</div>
+                <div class="nvs-metric-value">{{ pendientes if pendientes is defined else 0 }}</div>
+            </div>
+            <div class="nvs-metric-card nvs-metric-card-sent">
+                <div class="nvs-metric-title">Enviados</div>
+                <div class="nvs-metric-value">{{ enviados if enviados is defined else 0 }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVEGACIÓN Y FILTROS POR ESTADO -->
+    <div class="nvs-filters-nav">
+        <a href="{{ url_for('admin_pedidos') }}" class="nvs-filter-tab nvs-filter-tab-all {% if not estado_filtro %}nvs-active{% endif %}">Todos</a>
+        <a href="{{ url_for('admin_pedidos', estado='pendiente') }}" class="nvs-filter-tab nvs-filter-tab-pending {% if estado_filtro == 'pendiente' %}nvs-active{% endif %}">Pendientes</a>
+        <a href="{{ url_for('admin_pedidos', estado='pagado') }}" class="nvs-filter-tab nvs-filter-tab-paid {% if estado_filtro == 'pagado' %}nvs-active{% endif %}">Pagados</a>
+        <a href="{{ url_for('admin_pedidos', estado='enviado') }}" class="nvs-filter-tab nvs-filter-tab-sent {% if estado_filtro == 'enviado' %}nvs-active{% endif %}">Enviados</a>
+    </div>
+
+    <!-- MENSAJES FLASH DE LOGÍSTICA -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="nvs-flash-container {% if category == 'success' %}nvs-flash-success{% else %}nvs-flash-danger{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <!-- TABLA DE GESTIÓN DE PEDIDOS -->
+    <div class="tabla-admin">
+        <table>
+            <thead>
+                <tr>
+                    <th style="color: #ffffff; background: #242424;">Pedido</th>
+                    <th style="color: #ffffff; background: #242424;">Destinatario / Contacto</th>
+                    <th style="color: #ffffff; background: #242424;">Ubicación de Envío</th>
+                    <th style="color: #ffffff; background: #242424;">Artículos</th>
+                    <th style="color: #ffffff; background: #242424;">Total</th>
+                    <th style="color: #ffffff; background: #242424;">Estado Logístico</th>
+                    <th style="text-align: right; color: #ffffff; background: #242424;">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for p in pedidos %}
+                <tr style="border-top: 1px solid #333;">
+
+                    <!-- ID & Fecha -->
+                    <td>
+                        <div style="font-weight: bold; color: #ffffff; white-space: nowrap; font-size: 14px;">#NVS-{{ p.id }}</div>
+                        <div style="font-size: 11px; color: #a1a1a6; margin-top: 4px;">
+                            {{ p.fecha.strftime('%d/%m/%Y') if p.fecha else 'S/D' }}
+                        </div>
+                    </td>
+
+                    <!-- Contacto del Cliente -->
+                    <td>
+                        <div style="font-weight: bold; color: #ffffff;">{{ p.destinatario or p.usuario.nombre }}</div>
+                        <div style="font-size: 12px; color: #66b2ff; font-weight: bold; margin-top: 4px;">📞 {{ p.telefono or 'Sin Teléfono' }}</div>
+                        <div style="font-size: 11px; color: #a1a1a6; margin-top: 2px;">✉️ {{ p.usuario.email }}</div>
+                    </td>
+
+                    <!-- Dirección / Domicilio -->
+                    <td style="max-width: 200px; line-height: 1.4; font-size: 12px; color: #ffffff;">
+                        {% if p.direccion %}
+                        <div><strong>{{ p.direccion }}</strong></div>
+                        <div style="color: #a1a1a6; margin-top: 2px;">{{ p.ciudad }}, {{ p.provincia }} (CP {{ p.codigo_postal }})</div>
+                        {% else %}
+                        <span style="color: #666; font-style: italic;">Retiro / Datos no cargados</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Artículos solicitados -->
+                    <td style="line-height: 1.4; font-size: 12px; color: #ffffff;">
+                        {% for item in p.items %}
+                        <div style="margin-bottom: 2px; color: #ffffff;">
+                            • {{ item.producto.nombre }} <strong style="color: #0077ff;">(x{{ item.cantidad }})</strong>
+                        </div>
+                        {% endfor %}
+                    </td>
+
+                    <!-- Total con formato nítido -->
+                    <td style="font-weight: bold; color: #ffffff; font-size: 14px; white-space: nowrap;">
+                        ${{ "{:,.0f}".format(p.total) }}
+                    </td>
+
+                    <!-- Selector de estado unificado -->
+                    <td>
+                        <form action="{{ url_for('admin_actualizar_estado_pedido', id=p.id) }}" method="POST" style="margin: 0;">
+                            <select name="estado" onchange="this.form.submit()" class="nvs-badge {% if p.estado|lower == 'pendiente' %}nvs-badge-pendiente{% elif p.estado|lower == 'pagado' %}nvs-badge-pagado{% elif p.estado|lower == 'enviado' %}nvs-badge-enviado{% else %}nvs-badge-error{% endif %}" style="padding: 6px 10px; font-size: 11px; cursor: pointer; outline: none;">
+                                <option value="pendiente" {% if p.estado|lower=='pendiente' %}selected{% endif %}>Pendiente</option>
+                                <option value="pagado" {% if p.estado|lower=='pagado' %}selected{% endif %}>Pagado</option>
+                                <option value="enviado" {% if p.estado|lower=='enviado' %}selected{% endif %}>Enviado</option>
+                                <option value="cancelado" {% if p.estado|lower=='cancelado' %}selected{% endif %}>Cancelado</option>
+                                <option value="entregado" {% if p.estado|lower=='entregado' %}selected{% endif %}>Entregado</option>
+                            </select>
+                        </form>
+                    </td>
+
+                    <!-- Botón de acción integrado -->
+                    <td style="text-align: right; white-space: nowrap;">
+                        <a href="{{ url_for('admin_detalle_pedido', id=p.id) }}" class="btn-editar" style="text-decoration: none; display: inline-block; font-weight: bold; font-size: 12px;">
+                            Despachar ➔
+                        </a>
+                    </td>
+
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" style="padding: 40px; text-align: center; color: #666; font-weight: bold; font-style: italic;">
+                        No se encontraron pedidos registrados con este criterio.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

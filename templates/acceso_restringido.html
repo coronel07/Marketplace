@@ -1,0 +1,69 @@
+<!-- templates/acceso_restringido.html -->
+{% extends "admin_base.html" %}
+{% set section = "productos" %}
+
+{% block contenido %}
+<div class="acceso-container">
+    <div class="acceso-box">
+        <h1>🚫 Acceso Restringido</h1>
+        <p>No tenés permisos para acceder a esta sección.</p>
+        <a href="{{ url_for('index') }}" class="acceso-boton">Volver al inicio</a>
+    </div>
+</div>
+
+<style>
+/* Contenedor centrado vertical y horizontal */
+.acceso-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40vh;
+    padding: 20px;
+}
+
+/* Caja blanca con sombra y bordes redondeados */
+.acceso-box {
+    background-color: #333;
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Título grande y rojo */
+.acceso-box h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #dc2626; /* rojo */
+    margin-bottom: 20px;
+}
+
+/* Texto descriptivo */
+.acceso-box p {
+    font-size: 1.125rem;
+    color: #fff; /* gris */
+    margin-bottom: 30px;
+}
+
+/* Botón con gradiente y efecto hover */
+.acceso-boton {
+    display: inline-block;
+    padding: 5px 40px;
+    font-weight: bold;
+    color: #ffffff;
+    background: linear-gradient(to right, #3b82f6, #1d4ed8); /* azul gradiente */
+    border-radius: 20px;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.acceso-boton:hover {
+    background: linear-gradient(to right, #2563eb, #1e40af);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+</style>
+{% endblock %}
