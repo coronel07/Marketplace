@@ -9,21 +9,29 @@ from functools import wraps
 
 app = Flask(__name__)
 
-# Clave para usar session
-app.secret_key = "clave_secreta_para_la_app"
+# ==========================================
+# CONFIGURACIÓN BLINDADA PARA PRODUCCIÓN
+# ==========================================
 
-# Configuración base de datos (Conectado a Clever Cloud con PyMySQL y reciclaje de conexiones)
+# 1. Clave secreta robusta: Si está en Render usa una clave segura del sistema, sino la de pruebas
+app.secret_key = os.environ.get("SECRET_KEY", "una_clave_local_muy_larga_y_segura_123456")
+
+# Configuración de cookies de sesión para que los navegadores no las bloqueen en producción
+app.config.update(
+    SESSION_COOKIE_SECURE=False,  # Cambialo a True si usas HTTPS (Render te da HTTPS gratis)
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
+
+# Configuración base de datos (Clever Cloud)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://uemwwqhigdgsxy4g:JnzC4Q25GZRhFmjzOo8V@bvgbqgbz7frvxshoum3l-mysql.services.clever-cloud.com:3306/bvgbqgbz7frvxshoum3l'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Agregamos configuración de pool para evitar desconexiones inesperadas (Lost connection)
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     "pool_recycle": 280,
     "pool_pre_ping": True
 }
 
 db = SQLAlchemy(app)
-
 # ============================
 # DECORADORES DE LOGIN Y ADMIN
 # ============================
